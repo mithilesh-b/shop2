@@ -1,0 +1,47 @@
+{% extends "navbar.html" %}
+
+{% block body %}
+
+<div class="mb-3">
+    <label for="categorySelect" class="form-label">Select Category:</label>
+    <select class="form-select" id="categorySelect" name="category" onchange="this.form.submit()">
+        <option value="" {% if not selected_category %}selected{% endif %}>All Categories</option>
+        {% for category in all_categories %}
+            <option value="{{ category.id }}" {% if category.p_cat_name == selected_category %}selected{% endif %}>
+                {{ category.p_cat_name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+{% if my_products %}
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th>sl no</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in my_products %}
+                <tr>
+                    <td>{{ data.product_id }}</td>
+                    <td>{{ data.product_name }}</td>
+                    <td>{{ data.product_description }}</td>
+                    <td>{{ data.product_price }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'edit-order' data.product_id %}">edit</a>
+                        <a class="btn btn-primary" href="{% url 'delete-order' data.product_id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No products found</p>
+{% endif %}
+
+{% endblock body %}
